@@ -30,11 +30,40 @@ function Dashboard({ onLogout }) {
       .then(data => setSalones(data))
       .catch(err => console.error("Error al cargar salones:", err));
 
-    // Cargar reportes
+    // --- DATOS FICTICIOS PARA REPORTES ---
+    const fakeReports = [
+      // Pendientes (4 total, 3 de tipo Física)
+      { id: 1, tipo: 'Física', estado: 'Pendiente', fecha: '2026-06-03', alumno: 'Sofía Martínez', lugar: 'Patio' },
+      { id: 2, tipo: 'Física', estado: 'Pendiente', fecha: '2026-06-02', alumno: 'Carlos Ramírez', lugar: 'Salón 3B' },
+      { id: 3, tipo: 'Física', estado: 'Pendiente', fecha: '2026-05-30', alumno: 'Ana Torres', lugar: 'Gimnasio' },
+      { id: 11, tipo: 'Ciberacoso', estado: 'Pendiente', fecha: '2026-06-04', alumno: 'Isabel Roca', lugar: 'Foro online' },
+
+      // En revisión (2 total)
+      { id: 4, tipo: 'Verbal', estado: 'En revisión', fecha: '2026-05-28', alumno: 'Luis Hernández', lugar: 'Cafetería' },
+      { id: 5, tipo: 'Psicológica', estado: 'En revisión', fecha: '2026-05-25', alumno: 'María López', lugar: 'Online' },
+
+      // Resueltos (6 este mes - Junio)
+      { id: 6, tipo: 'Ciberacoso', estado: 'Resuelto', fecha: '2026-06-01', alumno: 'Elena Gómez', lugar: 'Redes Sociales' },
+      { id: 7, tipo: 'Discriminación', estado: 'Resuelto', fecha: '2026-06-02', alumno: 'Jorge Nuñez', lugar: 'Biblioteca' },
+      { id: 12, tipo: 'Verbal', estado: 'Resuelto', fecha: '2026-06-03', alumno: 'Laura Pons', lugar: 'Salón 2A' },
+      { id: 13, tipo: 'Física', estado: 'Resuelto', fecha: '2026-06-03', alumno: 'Marcos Vera', lugar: 'Patio' },
+      { id: 14, tipo: 'Psicológica', estado: 'Resuelto', fecha: '2026-06-04', alumno: 'Daniela Schmidt', lugar: 'Salón 1C' },
+      { id: 15, tipo: 'Verbal', estado: 'Resuelto', fecha: '2026-06-04', alumno: 'Adrián Soler', lugar: 'Comedor' },
+
+      // Resueltos (meses anteriores)
+      { id: 8, tipo: 'Física', estado: 'Resuelto', fecha: '2026-05-15', alumno: 'Pedro Jiménez', lugar: 'Canchas' },
+      { id: 9, tipo: 'Verbal', estado: 'Resuelto', fecha: '2026-05-12', alumno: 'Lucía Fernández', lugar: 'Pasillo' },
+      { id: 10, tipo: 'Psicológica', estado: 'Resuelto', fecha: '2026-04-20', alumno: 'Miguel Ángel', lugar: 'Salón 1A' },
+    ];
+    setReportes(fakeReports);
+    // --- FIN DE DATOS FICTICIOS ---
+
+    /* Carga original de reportes desde la API (comentado)
     fetch('http://localhost/VioPrevent/api/reportes.php')
       .then(res => res.json())
       .then(data => setReportes(data))
       .catch(err => console.error("Error al cargar reportes:", err));
+    */
 
     // Cargar nuevas secciones
     fetch('http://localhost/VioPrevent/api/orientadores.php').then(res => res.json()).then(data => setOrientadores(data)).catch(err => console.error("Error al cargar orientadores:", err));

@@ -23,9 +23,10 @@ function Cuestionario() {
           <ul>
             <li><a href="#" className="active">Inicio</a></li>
             <li><a href="#">Sobre el cuestionario</a></li>
-            <li><a href="#">¿Cómo funciona?</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li><Link to="/documento">Manual técnico</Link></li>
+            <li><Link to="/documento2">¿A quien va dirigido?</Link></li>
+            
+
           </ul>
         </nav>
         <Link to="/login" className="btn btn-start">Comenzar</Link>

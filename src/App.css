@@ -990,6 +990,272 @@ body {
     color: #ffffff;
 }
 
+/* ==========================================================================
+   ESTILOS PARA LA PÁGINA DE INICIO (DASHBOARD)
+   ========================================================================== */
+
+.main-content-container {
+  display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.charts-container {
+  /* Dejamos este espacio para los futuros gráficos */
+  background-color: var(--background-white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow-light);
+  min-height: 300px; /* Altura mínima para visualización */
+}
+
+.alerts-notifications-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alerts-notifications-container h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.notification-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--background-white);
+  box-shadow: var(--box-shadow-light);
+}
+
+.notification-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-base);
+}
+
+.notification-card svg {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notification-info {
+  flex-grow: 1;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.notification-main-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.notification-main-text b {
+  font-weight: 700;
+}
+
+.notification-sub-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.notification-arrow {
+  font-size: 1.5rem;
+  color: var(--text-tertiary);
+  font-weight: bold;
+}
+
+/* Colores específicos para cada tipo de alerta */
+.notification-card.alert-red {
+  background-color: var(--status-error-bg);
+  border-left: 5px solid var(--status-error-text);
+}
+.notification-card.alert-red svg {
+  color: var(--status-error-text);
+}
+
+.notification-card.alert-yellow {
+  background-color: var(--status-warning-bg);
+  border-left: 5px solid var(--status-warning-text);
+}
+.notification-card.alert-yellow svg {
+  color: var(--status-warning-text);
+}
+
+.notification-card.alert-green {
+  background-color: var(--status-success-bg);
+  border-left: 5px solid var(--status-success-text);
+}
+.notification-card.alert-green svg {
+  color: var(--status-success-text);
+}
+
+/* ==========================================================================
+   ESTILOS PARA LA TABLA DE ÚLTIMOS REPORTES
+   ========================================================================== */
+
+.section-container {
+  margin: 2rem; /* Margen general para toda la sección */
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.ultimos-reportes-container {
+  background-color: var(--background-white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Sombra más pronunciada */
+}
+
+.ultimos-reportes-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ultimos-reportes-table th,
+.ultimos-reportes-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color-light);
+  vertical-align: middle;
+}
+
+.ultimos-reportes-table thead th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.ultimos-reportes-table tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.ultimos-reportes-table tbody tr:nth-child(odd) {
+  background-color: var(--background-grey);
+}
+
+.ultimos-reportes-table tbody tr:hover {
+  background-color: #e9ecef; /* Un gris un poco más oscuro para el hover */
+}
+
+.ultimos-reportes-table thead th:last-child,
+.ultimos-reportes-table tbody td:last-child {
+  text-align: center;
+}
+
+.ultimos-reportes-table thead th:last-child,
+.ultimos-reportes-table tbody td:last-child {
+  text-align: center;
+}
+
+.ultimos-reportes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.badge-tipo, .badge-estado {
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Colores para los tipos de violencia */
+.badge-fisica { background-color: #ffebee; color: #c62828; }
+.badge-verbal { background-color: #fff3e0; color: #f57c00; }
+.badge-psicologica { background-color: #f3e5f5; color: #6a1b9a; }
+.badge-ciberacoso { background-color: #e3f2fd; color: #1565c0; }
+.badge-discriminacion { background-color: #e8f5e9; color: #2e7d32; }
+
+/* Reutilizamos los estilos de estado que ya teníamos */
+.status-pendiente { background-color: var(--status-error-bg); color: var(--status-error-text); }
+.status-en-revision, .status-en-proceso { background-color: var(--status-warning-bg); color: var(--status-warning-text); }
+.status-resuelto { background-color: var(--status-success-bg); color: var(--status-success-text); }
+
+.ver-todos-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--primary-green);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.ver-todos-link:hover {
+  color: var(--primary-green-dark);
+}
+
+/* ==========================================================================
+   ESTILOS PARA BOTONES DE ACCIÓN EN TABLAS
+   ========================================================================== */
+
+.action-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.action-view {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.action-view:hover {
+  background-color: #ced4da;
+  color: #212529;
+}
+
+
+/* ==========================================================================
+   ESTILOS PARA BOTONES DE ACCIÓN EN TABLAS
+   ========================================================================== */
+
+.action-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.action-view {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.action-view:hover {
+  background-color: #ced4da;
+  color: #212529;
+}
+
+
+
+
 .btn-start:hover {
     background-color: #3a5a40;
 }
