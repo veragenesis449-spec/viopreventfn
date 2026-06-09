@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import '../App.css';
+import '../styles/inicio.css';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import 'leaflet.heat';
-import { FaUsers, FaSchool, FaFileAlt, FaExclamationTriangle, FaBell, FaCheckCircle } from 'react-icons/fa';
-import { default as UltimosReportes } from './UltimosReportes'; // Importamos el nuevo componente
+import 'leaflet.heat/dist/leaflet-heat.js';
+import { FaUsers, FaSchool, FaFileLines, FaTriangleExclamation, FaBell, FaCircleCheck } from 'react-icons/fa6';
+import UltimosReportes from './UltimosReportes'; // Importamos el nuevo componente
 
 // El componente recibe todos los datos que necesita para los resúmenes
 function Inicio({ alumnos, salones, reportes }) {
@@ -74,126 +75,92 @@ function Inicio({ alumnos, salones, reportes }) {
   }, []); // El array vacío asegura que este efecto se ejecute solo una vez.
 
   return (
-    <div className="container">
-      {/* MENU - Tomado del HTML */}
-      <div className="sidebar">
-        <div className="logo">
-          Vio<span>Prevent</span>
-        </div>
-        <ul className="menu">
-          <li className="activo">Inicio</li>
-          <li>Alumnos</li>
-          <li>Reportes</li>
-          <li>Salones</li>
-          <li>Orientadores</li>
-          <li>Responsables</li>
-          <li>Ajustes</li>
-        </ul>
-      </div>
+    <>
+      {/* El contenido existente de 'content-area' se coloca aquí dentro */}
+      <section className="content-area">
+        <h1>Bienvenido al Panel de Control</h1>
+        <p>Desde aquí podrás administrar la información clave de la institución.</p>
 
-      {/* CONTENIDO - Contenedor principal */}
-      <div className="main">
-        {/* HEADER - Tomado del HTML */}
-        <div className="header">
-          <input
-            type="text"
-            className="buscador"
-            placeholder="Buscar alumnos, reportes..."
-          />
-          <div className="usuario">
-            <h3>Juan Pérez (Director)</h3>
-            <button className="btn-salir">
-              Cerrar sesión
+        {/* Contenedor para las tarjetas de estadísticas (código existente) */}
+        <div className="stats-cards-container">
+          <div className="stat-card">
+            <FaUsers className="stat-card-icon" />
+            <div className="stat-card-info">
+              <span className="stat-card-title">Total de Alumnos</span>
+              <span className="stat-card-value">{totalAlumnos}</span>
+              <span className="stat-card-subtitle">Alumnos registrados</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <FaSchool className="stat-card-icon" />
+            <div className="stat-card-info">
+              <span className="stat-card-title">Total de Salones</span>
+              <span className="stat-card-value">{totalSalones}</span>
+              <span className="stat-card-subtitle">Salones activos</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <FaFileLines className="stat-card-icon" />
+            <div className="stat-card-info">
+              <span className="stat-card-title">Reportes Totales</span>
+              <span className="stat-card-value">{totalReportes}</span>
+              <span className="stat-card-subtitle">En todos los periodos</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <FaTriangleExclamation className="stat-card-icon" />
+            <div className="stat-card-info">
+              <span className="stat-card-title">Reportes Pendientes</span>
+              <span className="stat-card-value">{reportesPendientes}</span>
+              <span className="stat-card-subtitle">Requieren atención</span>
+            </div>
+          </div>
+        </div>
+
+        {/* MAPA DE CALOR */}
+        <div className="map-container">
+          <h3 style={{ textAlign: 'center', color: '#032b2b' }}>Mapa de Calor de Incidencias</h3>
+          <div id="map" style={{ height: '400px' }}></div>
+        </div>
+
+        {/* Contenedor principal para alinear gráficos y alertas (código existente) */}
+        <div className="main-content-container">
+          <div className="charts-container">
+            {/* Próximamente: Gráficos */}
+          </div>
+          <div className="alerts-notifications-container">
+            <h2>Alertas y notificaciones</h2>
+            <button className="notification-card alert-red">
+              <FaBell />
+              <div className="notification-info">
+                <span className="notification-main-text"><b>{`${reportesFisicosPendientes} reportes`}</b> de violencia física</span>
+                <span className="notification-sub-text">pendientes de atención.</span>
+              </div>
+              <span className="notification-arrow">&gt;</span>
+            </button>
+            <button className="notification-card alert-yellow">
+              <FaBell />
+              <div className="notification-info">
+                <span className="notification-main-text"><b>{`${reportesEnSeguimiento} reportes`}</b> en seguimiento</span>
+                <span className="notification-sub-text">requieren actualización.</span>
+              </div>
+              <span className="notification-arrow">&gt;</span>
+            </button>
+            <button className="notification-card alert-green">
+              <FaCircleCheck />
+              <div className="notification-info">
+                <span className="notification-main-text"><b>{`${reportesResueltosMes} reportes`}</b> han sido</span>
+                <span className="notification-sub-text">resueltos este mes.</span>
+              </div>
+              <span className="notification-arrow">&gt;</span>
             </button>
           </div>
         </div>
 
-        {/* El contenido existente de 'content-area' se coloca aquí dentro */}
-        <section className="content-area">
-          <h1>Bienvenido al Panel de Control</h1>
-          <p>Desde aquí podrás administrar la información clave de la institución.</p>
-
-          {/* Contenedor para las tarjetas de estadísticas (código existente) */}
-          <div className="stats-cards-container">
-            <div className="stat-card">
-              <FaUsers className="stat-card-icon" />
-              <div className="stat-card-info">
-                <span className="stat-card-title">Total de Alumnos</span>
-                <span className="stat-card-value">{totalAlumnos}</span>
-                <span className="stat-card-subtitle">Alumnos registrados</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <FaSchool className="stat-card-icon" />
-              <div className="stat-card-info">
-                <span className="stat-card-title">Total de Salones</span>
-                <span className="stat-card-value">{totalSalones}</span>
-                <span className="stat-card-subtitle">Salones activos</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <FaFileAlt className="stat-card-icon" />
-              <div className="stat-card-info">
-                <span className="stat-card-title">Reportes Totales</span>
-                <span className="stat-card-value">{totalReportes}</span>
-                <span className="stat-card-subtitle">En todos los periodos</span>
-              </div>
-            </div>
-            <div className="stat-card">
-              <FaExclamationTriangle className="stat-card-icon" />
-              <div className="stat-card-info">
-                <span className="stat-card-title">Reportes Pendientes</span>
-                <span className="stat-card-value">{reportesPendientes}</span>
-                <span className="stat-card-subtitle">Requieren atención</span>
-              </div>
-            </div>
-          </div>
-
-          {/* MAPA DE CALOR - Añadido desde el HTML */}
-          <div className="map-container">
-            <h3 style={{ textAlign: 'center', color: '#032b2b' }}>Mapa de Calor de Incidencias</h3>
-            <div id="map" style={{ height: '400px' }}></div>
-          </div>
-
-          {/* Contenedor principal para alinear gráficos y alertas (código existente) */}
-          <div className="main-content-container">
-            <div className="charts-container">
-              {/* Próximamente: Gráficos */}
-            </div>
-            <div className="alerts-notifications-container">
-              <h2>Alertas y notificaciones</h2>
-              <button className="notification-card alert-red">
-                <FaBell />
-                <div className="notification-info">
-                  <span className="notification-main-text"><b>{`${reportesFisicosPendientes} reportes`}</b> de violencia física</span>
-                  <span className="notification-sub-text">pendientes de atención.</span>
-                </div>
-                <span className="notification-arrow">&gt;</span>
-              </button>
-              <button className="notification-card alert-yellow">
-                <FaBell />
-                <div className="notification-info">
-                  <span className="notification-main-text"><b>{`${reportesEnSeguimiento} reportes`}</b> en seguimiento</span>
-                  <span className="notification-sub-text">requieren actualización.</span>
-                </div>
-                <span className="notification-arrow">&gt;</span>
-              </button>
-              <button className="notification-card alert-green">
-                <FaCheckCircle />
-                <div className="notification-info">
-                  <span className="notification-main-text"><b>{`${reportesResueltosMes} reportes`}</b> han sido</span>
-                  <span className="notification-sub-text">resueltos este mes.</span>
-                </div>
-                <span className="notification-arrow">&gt;</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Tabla de Últimos Reportes (código existente) */}
-          <UltimosReportes reportes={reportes} />
-        </section>
-      </div>
-    </div>
+        {/* Tabla de Últimos Reportes (código existente) */}
+        <UltimosReportes reportes={reportes} />
+      </section>
+    </>
   );
 }
 
