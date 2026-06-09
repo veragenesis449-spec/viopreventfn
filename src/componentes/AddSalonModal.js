@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './Modal.css';
+import './Modal.css';
 import '../App.css';
 
 function AddSalonModal({ onClose, onAddSalon, onUpdateSalon, salonToEdit }) {

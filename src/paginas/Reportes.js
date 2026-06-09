@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/Reportes.css';
 import '../App.css';
 import DataTable from './DataTable'; // Reutilizamos nuestro componente de tabla
 

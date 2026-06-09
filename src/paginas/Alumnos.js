@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../App.css';
+import '../styles/Alumnos.css';
 import AddStudentModal from '../componentes/AddStudentModal'; // Importamos el modal
 
 function Alumnos({ salones }) {

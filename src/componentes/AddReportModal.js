@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './styles/Modal.css';
 import '../App.css';
 
 // El modal ahora recibe la lista de alumnos como prop

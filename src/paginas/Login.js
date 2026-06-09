@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // 1. Importar Link
 import '../App.css';
+import '../styles/Login.css';
 
 function Login({ onLogin }) {
   const navigate = useNavigate(); // Hook para la navegación

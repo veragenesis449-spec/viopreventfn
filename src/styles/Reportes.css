@@ -1,0 +1,15 @@
+/* Estilos para los estados de los reportes */
+.status-pendiente {
+  background-color: #fffbe6;
+  color: #faad14;
+}
+
+.status-resuelto {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+
+.status-en-revisión {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/Modal.css';
 import '../App.css';
 
 // El modal ahora es más inteligente: puede crear o editar.
