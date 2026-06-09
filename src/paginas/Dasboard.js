@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Dasboard.css';
-import '../App.css'; // Usaremos el mismo archivo de estilos
+import '../App.css'; // Estilos generales primero
+import '../styles/Dasboard.css'; // Estilos específicos del componente después, para que tengan prioridad
 import Alumnos from './Alumnos'; // Importamos el nuevo componente
 import Reportes from './Reportes'; // Importamos el componente de Reportes
 import Salones from './Salones'; // Importamos el componente de Salones
@@ -134,8 +134,8 @@ function Dashboard({ onLogout }) {
 
   return (
     <div className="dashboard-container">
-      {/* Barra Lateral de Navegación */}
-      <aside className="sidebar">
+      {/* Barra Lateral de Navegación con ID para máxima prioridad */}
+      <aside id="dashboard-sidebar" className="sidebar">
         <div className="sidebar-header">
           <h2>VioPrevent</h2>
         </div>

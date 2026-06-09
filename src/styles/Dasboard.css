@@ -5,47 +5,58 @@
   background-color: #fff;
 }
 
-/* Barra Lateral */
-.sidebar {
-  width: 260px;
-  background-color: #f7f9fc;
-  padding: 1.5rem;
+/* Estilos para la barra lateral - DISEÑO FINAL */
+#dashboard-sidebar {
+  width: 250px;
+  background-color: #1a2c37; /* Color de fondo oscuro de la imagen */
+  padding: 25px;
+  height: 100vh;
+  box-shadow: none !important;
   display: flex;
   flex-direction: column;
 }
 
-.sidebar-header h2 {
-  font-size: 2rem;
+#dashboard-sidebar .sidebar-header h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 2rem;
+  color: #ffffff;
+  margin-bottom: 40px; /* Más espacio debajo del logo */
+  text-align: left;
 }
 
-.sidebar-nav ul {
+#dashboard-sidebar .sidebar-nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.sidebar-nav li a {
-  display: block;
-  padding: 1rem;
-  color: #666;
+#dashboard-sidebar .sidebar-nav li {
+  margin-bottom: 18px; /* Espacio entre elementos */
+  padding: 0;
+}
+
+/* Estilo base para TODOS los enlaces (inactivos) */
+#dashboard-sidebar .sidebar-nav li a {
+  color: #a9b7c1; /* Color de texto de los enlaces inactivos */
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background-color 0.3s, color 0.3s;
+  font-size: 1.1rem;
+  font-weight: 400; /* Peso normal */
+  display: block;
+  transition: color 0.2s ease-in-out; /* Transición suave */
 }
 
-.sidebar-nav li a:hover {
-  background-color: #eef2f7;
-  color: #333;
+/* Efecto al pasar el ratón por CUALQUIER enlace */
+#dashboard-sidebar .sidebar-nav li a:hover {
+  color: #ffffff; /* Se vuelve blanco al pasar el ratón */
 }
 
-.sidebar-nav li.active a {
-  background-color: #789a44;
-  color: white;
-  font-weight: bold;
+/* Estilo específico para el enlace ACTIVO (como "Inicio") */
+#dashboard-sidebar .sidebar-nav li.active a {
+  color: #ffffff; /* El enlace activo es blanco */
+  font-weight: 700; /* Y es bold */
 }
+
 
 /* Contenido Principal del Dashboard */
 .main-content-dashboard {

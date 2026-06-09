@@ -7,11 +7,10 @@ const formatDate = (dateString) => {
   const date = new Date(dateString);
   // Sumar un día porque new Date() puede interpretarlo como el día anterior por la zona horaria
   date.setDate(date.getDate() + 1);
-  return date.toLocaleDateString('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Se suma 1 porque los meses van de 0 a 11
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
 };
 
 // Función para convertir un texto a un nombre de clase CSS válido
