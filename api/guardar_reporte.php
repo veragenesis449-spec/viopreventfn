@@ -65,6 +65,27 @@ $stmt->bind_param("ssissss", $iniciales, $grupo, $edad, $genero, $nivel_gravedad
 
 // Ejecutar la sentencia
 if ($stmt->execute()) {
+    $reporte_id = $conn->insert_id; // Obtener el ID del reporte recién insertado
+
+    // Verificar si hay respuestas dinámicas para guardar
+    if (isset($data['respuestasDinamicas']) && is_array($data['respuestasDinamicas'])) {
+        $stmt_respuestas = $conn->prepare("INSERT INTO respuestas_reporte (id_reporte, pregunta, respuesta) VALUES (?, ?, ?)");
+
+        if ($stmt_respuestas) {
+            foreach ($data['respuestasDinamicas'] as $item) {
+                // Asegurarse de que tanto la pregunta como la respuesta existan
+                if (isset($item['pregunta']) && isset($item['respuesta'])) {
+                    $pregunta = $item['pregunta'];
+                    $respuesta = $item['respuesta'];
+                    $stmt_respuestas->bind_param("iss", $reporte_id, $pregunta, $respuesta);
+                    $stmt_respuestas->execute();
+                }
+            }
+            $stmt_respuestas->close();
+        }
+        // Opcional: manejar el caso en que la preparación de $stmt_respuestas falle
+    }
+
     http_response_code(201); // Created
     echo json_encode(["mensaje" => "Reporte guardado exitosamente."]);
 } else {

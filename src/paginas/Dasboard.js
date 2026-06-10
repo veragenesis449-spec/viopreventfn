@@ -6,8 +6,9 @@ import Reportes from './Reportes'; // Importamos el componente de Reportes
 import Salones from './Salones'; // Importamos el componente de Salones
 import Inicio from './Inicio'; // Importamos el nuevo componente de Inicio
 import DataTable from './DataTable'; // Importamos el nuevo componente genérico
+import Ajustes from './Ajustes'; // Importamos el componente de Ajustes
 
-function Dashboard({ onLogout }) {
+function Dashboard({ onLogout, userRole, userName, onUpdateUserName }) {
   // Estado para controlar la vista activa
   const [activeView, setActiveView] = useState('Inicio');
   // El estado ahora se inicializa como un array vacío.
@@ -121,6 +122,8 @@ function Dashboard({ onLogout }) {
         return <DataTable title="Gestión de Orientadores" data={orientadores} />;
       case 'Responsables':
         return <DataTable title="Gestión de Responsables" data={responsables} />;
+      case 'Ajustes':
+        return <Ajustes userName={userName} onUpdateUserName={onUpdateUserName} />;
       case 'Inicio':
       default:
         // Pasamos los datos directamente al componente Inicio
@@ -144,22 +147,31 @@ function Dashboard({ onLogout }) {
             <li className={activeView === 'Inicio' ? 'active' : ''}>
               <a href="#" onClick={() => setActiveView('Inicio')}>Inicio</a>
             </li>
-            <li className={activeView === 'Alumnos' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Alumnos')}>Alumnos</a>
-            </li>
+
+            {/* Reportes is visible for both */}
             <li className={activeView === 'Reportes' ? 'active' : ''}>
               <a href="#" onClick={() => setActiveView('Reportes')}>Reportes</a>
             </li>
-            <li className={activeView === 'Salones' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Salones')}>Salones</a>
-            </li>
-            <li className={activeView === 'Orientadores' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Orientadores')}>Orientadores</a>
-            </li>
-            <li className={activeView === 'Responsables' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Responsables')}>Responsables</a>
-            </li>
-            {/* Añade aquí más elementos de menú en el futuro */}
+
+            {/* Director only links */}
+            {userRole === 'director' && (
+              <>
+                <li className={activeView === 'Alumnos' ? 'active' : ''}>
+                  <a href="#" onClick={() => setActiveView('Alumnos')}>Alumnos</a>
+                </li>
+                <li className={activeView === 'Salones' ? 'active' : ''}>
+                  <a href="#" onClick={() => setActiveView('Salones')}>Salones</a>
+                </li>
+                <li className={activeView === 'Orientadores' ? 'active' : ''}>
+                  <a href="#" onClick={() => setActiveView('Orientadores')}>Orientadores</a>
+                </li>
+                <li className={activeView === 'Responsables' ? 'active' : ''}>
+                  <a href="#" onClick={() => setActiveView('Responsables')}>Responsables</a>
+                </li>
+              </>
+            )}
+            
+            {/* Common for all */}
             <li><a href="#" onClick={() => setActiveView('Ajustes')}>Ajustes</a></li>
           </ul>
         </nav>
@@ -172,7 +184,7 @@ function Dashboard({ onLogout }) {
             <input type="search" placeholder="Buscar alumnos, reportes..." />
           </div>
           <div className="header-user">
-            <span>Juan Pérez (Director)</span>
+            <span>{userName} ({userRole === 'director' ? 'Director' : 'Orientador'})</span>
             <button className="logout-button" onClick={onLogout}>Cerrar Sesión</button>
           </div>
         </header>

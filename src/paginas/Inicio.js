@@ -110,9 +110,9 @@ function Inicio({ alumnos, salones, reportes }) {
           <div className="stat-card">
             <FaTriangleExclamation className="stat-card-icon" />
             <div className="stat-card-info">
-              <span className="stat-card-title">Reportes Pendientes</span>
+              <span className="stat-card-title"> Reportes Pendientes</span>
               <span className="stat-card-value">{reportesPendientes}</span>
-              <span className="stat-card-subtitle">Requieren atención</span>
+              <span className="stat-card-subtitle"> Requieren atención</span>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@ function Inicio({ alumnos, salones, reportes }) {
               <FaBell />
               <div className="notification-info">
                 <span className="notification-main-text"><b>{`${reportesFisicosPendientes} reportes`}</b> de violencia física</span>
-                <span className="notification-sub-text">pendientes de atención.</span>
+                <span className="notification-sub-text">   pendientes de atención.</span>
               </div>
               <span className="notification-arrow">&gt;</span>
             </button>
@@ -142,7 +142,7 @@ function Inicio({ alumnos, salones, reportes }) {
               <FaBell />
               <div className="notification-info">
                 <span className="notification-main-text"><b>{`${reportesEnSeguimiento} reportes`}</b> en seguimiento</span>
-                <span className="notification-sub-text">requieren actualización.</span>
+                <span className="notification-sub-text">   requieren actualización.</span>
               </div>
               <span className="notification-arrow">&gt;</span>
             </button>
@@ -150,7 +150,7 @@ function Inicio({ alumnos, salones, reportes }) {
               <FaCircleCheck />
               <div className="notification-info">
                 <span className="notification-main-text"><b>{`${reportesResueltosMes} reportes`}</b> han sido</span>
-                <span className="notification-sub-text">resueltos este mes.</span>
+                <span className="notification-sub-text">   resueltos este mes.</span>
               </div>
               <span className="notification-arrow">&gt;</span>
             </button>

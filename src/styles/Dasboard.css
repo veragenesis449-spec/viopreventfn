@@ -8,12 +8,18 @@
 /* Estilos para la barra lateral - DISEÑO FINAL */
 #dashboard-sidebar {
   width: 250px;
-  background-color: #1a2c37; /* Color de fondo oscuro de la imagen */
+  background-color: #053502; /* Color de fondo oscuro (carbón) */
   padding: 25px;
-  height: 100vh;
+  position: fixed; /* Fija la barra lateral */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+  overflow-y: auto; /* Permite scroll si el contenido es muy largo */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
   box-shadow: none !important;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
 }
 
 #dashboard-sidebar .sidebar-header h2 {
@@ -32,26 +38,37 @@
 }
 
 #dashboard-sidebar .sidebar-nav li {
-  margin-bottom: 18px; /* Espacio entre elementos */
+  margin-bottom: 10px; /* Espacio reducido entre elementos */
   padding: 0;
+  border-radius: 8px; /* Bordes redondeados para el fondo */
+  transition: background-color 0.2s ease-in-out;
 }
 
 /* Estilo base para TODOS los enlaces (inactivos) */
 #dashboard-sidebar .sidebar-nav li a {
-  color: #a9b7c1; /* Color de texto de los enlaces inactivos */
+  color: #ffffff; /* Color de texto gris claro para inactivos */
   text-decoration: none;
   font-size: 1.1rem;
-  font-weight: 400; /* Peso normal */
+  font-weight: 500; /* Un poco más de peso */
   display: block;
-  transition: color 0.2s ease-in-out; /* Transición suave */
+  padding: 12px 15px; /* Padding para hacer el área de clic más grande */
+  transition: color 0.2s ease-in-out;
 }
 
 /* Efecto al pasar el ratón por CUALQUIER enlace */
+#dashboard-sidebar .sidebar-nav li:hover {
+  background-color: #74bf6a; /* Fondo gris más claro al pasar el ratón */
+}
+
 #dashboard-sidebar .sidebar-nav li a:hover {
   color: #ffffff; /* Se vuelve blanco al pasar el ratón */
 }
 
-/* Estilo específico para el enlace ACTIVO (como "Inicio") */
+/* Estilo específico para el enlace ACTIVO (como "Responsables") */
+#dashboard-sidebar .sidebar-nav li.active {
+  background-color: #3fa138; /* Fondo verde sutil para el activo */
+}
+
 #dashboard-sidebar .sidebar-nav li.active a {
   color: #ffffff; /* El enlace activo es blanco */
   font-weight: 700; /* Y es bold */
@@ -63,6 +80,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  margin-left: 250px; /* Añade margen para dejar espacio a la barra lateral */
 }
 
 .main-header {

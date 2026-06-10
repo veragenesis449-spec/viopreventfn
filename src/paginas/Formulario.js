@@ -50,9 +50,18 @@ function Formulario() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Mapear las respuestas dinámicas para incluir la pregunta y la respuesta
+    const respuestasConPreguntas = formData.gravedad && preguntasPorGravedad[formData.gravedad]
+      ? preguntasPorGravedad[formData.gravedad].map((pregunta, index) => ({
+          pregunta: pregunta,
+          respuesta: respuestasDinamicas[`pregunta-${index}`] || '',
+        }))
+      : [];
+
     const finalData = {
       ...formData,
-      respuestasDinamicas,
+      respuestasDinamicas: respuestasConPreguntas, // Enviar el array de objetos
     };
 
     try {

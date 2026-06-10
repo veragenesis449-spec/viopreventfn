@@ -18,17 +18,26 @@ function App() {
 
 function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null); // Estado para el rol del usuario
+  const [userName, setUserName] = useState('Juan Pérez'); // Estado para el nombre del usuario
   const navigate = useNavigate(); // Hook para la navegación
 
   // Función para manejar el inicio de sesión exitoso
-  const handleLogin = () => {
+  const handleLogin = (role) => {
     setIsLoggedIn(true);
+    setUserRole(role); // Guardar el rol del usuario
   };
 
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setUserRole(null); // Limpiar el rol al cerrar sesión
     navigate('/login'); // Redirigir al login
+  };
+
+  // Función para actualizar el nombre del usuario
+  const handleUpdateUserName = (newName) => {
+    setUserName(newName);
   };
 
   return (
@@ -40,11 +49,11 @@ function AppContent() {
         <Route path="/documento2" element={<VisorPDF2 />} />
         <Route 
           path="/login" 
-          element={isLoggedIn ? <Dashboard onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} 
+          element={isLoggedIn ? <Dashboard onLogout={handleLogout} userRole={userRole} userName={userName} onUpdateUserName={handleUpdateUserName} /> : <Login onLogin={handleLogin} />} 
         />
         <Route 
           path="/dashboard" 
-          element={isLoggedIn ? <Dashboard onLogout={handleLogout} /> : <Login onLogin={handleLogin} />} 
+          element={isLoggedIn ? <Dashboard onLogout={handleLogout} userRole={userRole} userName={userName} onUpdateUserName={handleUpdateUserName} /> : <Login onLogin={handleLogin} />} 
         />
       </Routes>
     </div>

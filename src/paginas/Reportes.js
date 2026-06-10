@@ -1,59 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Reportes.css';
 import '../App.css';
-import DataTable from './DataTable'; // Reutilizamos nuestro componente de tabla
+import GraficaGravedad from './GraficaGravedad'; // Importar el nuevo componente
 
 function Reportes() {
   const [reportes, setReportes] = useState([]);
-  const [selectedReport, setSelectedReport] = useState(null);
-  const [testigos, setTestigos] = useState([]);
-  const [victimas, setVictimas] = useState([]);
-  const [victimarios, setVictimarios] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [mostrarGrafica, setMostrarGrafica] = useState(false); // Estado para la visibilidad de la gráfica
 
-  // Cargar la lista inicial de reportes
   useEffect(() => {
-    fetch('http://localhost:3001/api/reportes')
+    fetch('http://localhost/VioPrevent/api/obtener_reportes.php')
       .then(res => res.json())
-      .then(data => setReportes(data))
-      .catch(err => console.error("Error al cargar reportes:", err));
+      .then(data => {
+        setReportes(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error al cargar reportes:", err);
+        setLoading(false);
+      });
   }, []);
 
-  // Función para manejar el clic en un reporte
-  const handleReportClick = (reporte) => {
-    if (selectedReport && selectedReport.id_reporte === reporte.id_reporte) {
-      // Si se hace clic en el mismo reporte, se ocultan los detalles
-      setSelectedReport(null);
-    } else {
-      setSelectedReport(reporte);
-      setLoading(true);
-      // Limpiamos los datos anteriores
-      setTestigos([]);
-      setVictimas([]);
-      setVictimarios([]);
-
-      // Buscamos los datos asociados al reporte seleccionado
-      const reporteId = reporte.id_reporte;
-      const fetchTestigos = fetch(`http://localhost:3001/api/reportes/${reporteId}/testigos`).then(res => res.json());
-      const fetchVictimas = fetch(`http://localhost:3001/api/reportes/${reporteId}/victimas`).then(res => res.json());
-      const fetchVictimarios = fetch(`http://localhost:3001/api/reportes/${reporteId}/victimarios`).then(res => res.json());
-
-      Promise.all([fetchTestigos, fetchVictimas, fetchVictimarios])
-        .then(([testigosData, victimasData, victimariosData]) => {
-          setTestigos(testigosData);
-          setVictimas(victimasData);
-          setVictimarios(victimariosData);
-        })
-        .catch(err => console.error("Error al cargar detalles del reporte:", err))
-        .finally(() => setLoading(false));
+  // Función para renderizar una tabla de reportes para un nivel de gravedad específico
+  const renderReportesTable = (reportes, nivel) => {
+    const filteredReportes = reportes.filter(r => r.nivel_gravedad && r.nivel_gravedad.toLowerCase() === nivel);
+    
+    if (filteredReportes.length === 0) {
+      return <p>No hay reportes de gravedad {nivel}.</p>;
     }
-  };
 
-  return (
-    <div className="alumnos-container">
-      <div className="alumnos-header">
-        <h2>Gestión de Informes</h2>
-      </div>
+    return (
       <table className="alumnos-table">
         <thead>
           <tr>
@@ -64,35 +40,61 @@ function Reportes() {
           </tr>
         </thead>
         <tbody>
-          {reportes.map((reporte) => (
-            <React.Fragment key={reporte.id_reporte}>
-              <tr className={selectedReport?.id_reporte === reporte.id_reporte ? 'selected-row' : ''}>
-                <td>{reporte.id_reporte}</td>
-                <td>{reporte.descripcion}</td>
-                <td>{new Date(reporte.fecha).toLocaleDateString()}</td>
-                <td>
-                  <button className="action-button view-button" onClick={() => handleReportClick(reporte)}>
-                    {selectedReport?.id_reporte === reporte.id_reporte ? 'Ocultar Detalles' : 'Ver Detalles'}
-                  </button>
-                </td>
-              </tr>
-              {selectedReport?.id_reporte === reporte.id_reporte && (
-                <tr>
-                  <td colSpan="4">
-                    {loading ? <p>Cargando detalles...</p> : (
-                      <div className="report-details">
-                        <DataTable title="Testigos" data={testigos} />
-                        <DataTable title="Víctimas" data={victimas} />
-                        <DataTable title="Victimarios" data={victimarios} />
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              )}
-            </React.Fragment>
+          {filteredReportes.map((reporte) => (
+            <tr key={reporte.id_reporte}>
+              <td>{reporte.id_reporte}</td>
+              <td>{reporte.descripcion}</td>
+              <td>{new Date(reporte.fecha_reporte).toLocaleDateString()}</td>
+              <td>
+                <button className="action-button view-button">
+                  Ver Detalles
+                </button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
+    );
+  };
+
+  return (
+    <div className="alumnos-container">
+      <div className="alumnos-header">
+        <h2>Gestión de Informes</h2>
+      </div>
+
+      {loading ? (
+        <p>Cargando reportes...</p>
+      ) : (
+        <div>
+          <div className="report-section">
+            <h3>Gravedad Alta</h3>
+            {renderReportesTable(reportes, 'alta')}
+          </div>
+          <div className="report-section">
+            <h3>Gravedad Media</h3>
+            {renderReportesTable(reportes, 'media')}
+          </div>
+          <div className="report-section">
+            <h3>Gravedad Baja</h3>
+            {renderReportesTable(reportes, 'baja')}
+          </div>
+
+          {mostrarGrafica && (
+            <div className="grafica-container" style={{ maxWidth: '400px', margin: '40px auto 0 auto' }}>
+              <GraficaGravedad reportes={reportes} />
+            </div>
+          )}
+        </div>
+      )}
+
+      <button 
+        onClick={() => setMostrarGrafica(!mostrarGrafica)} 
+        className="button-primary"
+        style={{ marginTop: '20px' }}
+      >
+        {mostrarGrafica ? 'Ocultar Gráfica' : 'Mostrar Gráfica'}
+      </button>
     </div>
   );
 }

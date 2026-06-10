@@ -8,6 +8,7 @@ function Login({ onLogin }) {
   // Estados para guardar el correo y la contraseña
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('director'); // Estado para el rol
 
   // Función que se ejecuta al enviar el formulario
   const handleSubmit = (event) => {
@@ -16,7 +17,7 @@ function Login({ onLogin }) {
     // el email y la contraseña contra tu backend o base de datos.
 
     // Por ahora, simulamos que el inicio de sesión es siempre exitoso.
-    onLogin(); // Llama a la función del componente padre para actualizar el estado.
+    onLogin(role); // Llama a la función del componente padre con el rol.
     navigate('/dashboard'); // Redirige al usuario a la página del dashboard.
   };
 
@@ -43,6 +44,18 @@ function Login({ onLogin }) {
               onChange={(e) => setPassword(e.target.value)} 
               required 
             />
+          </div>
+          <div className="form-group">
+            <select value={role} onChange={(e) => setRole(e.target.value)} required>
+              <option value="director">Director</option>
+              <option value="orientador">Orientador</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <select value={role} onChange={(e) => setRole(e.target.value)} required>
+              <option value="director">Director</option>
+              <option value="orientador">Orientador</option>
+            </select>
           </div>
           <button type="submit" className="button-primary login-submit-btn">Ingresar</button>
         </form>
