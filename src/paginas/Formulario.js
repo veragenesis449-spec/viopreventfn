@@ -21,7 +21,7 @@ function Formulario() {
   const [respuestasDinamicas, setRespuestasDinamicas] = useState({});
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
 
     if (name.startsWith('evidencia.')) {
       const field = name.split('.')[1];

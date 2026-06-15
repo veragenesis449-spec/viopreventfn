@@ -27,47 +27,68 @@ function Inicio({ alumnos, salones, reportes }) {
   }).length;
 
   useEffect(() => {
-    // Variable para guardar la instancia del mapa
     let map;
+    let animationFrameId;
 
-    // Asegurarse de que el contenedor del mapa esté vacío antes de inicializar
-    const mapContainer = document.getElementById('map');
-    if (mapContainer && mapContainer._leaflet_id) {
-      mapContainer._leaflet_id = null;
-    }
+    const initHeatmap = () => {
+      const mapContainer = document.getElementById('map');
+      
+      if (!mapContainer) {
+        animationFrameId = requestAnimationFrame(initHeatmap);
+        return;
+      }
 
-    // Coordenadas aproximadas para centrar el mapa
-    map = L.map('map').setView([19.6729569, -99.0870913], 17);
+      const width = mapContainer.clientWidth;
+      const height = mapContainer.clientHeight;
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Datos © OpenStreetMap',
-      maxZoom: 19
-    }).addTo(map);
+      // Reintentar si el contenedor aún no tiene dimensiones
+      if (width === 0 || height === 0) {
+        animationFrameId = requestAnimationFrame(initHeatmap);
+        return;
+      }
 
-    // Zonas de calor (datos de ejemplo)
-    var reportesHeat = [
-      [19.67295, -99.08709, 0.9], // Baños
-      [19.67297, -99.08712, 0.8], // Pasillos
-      [19.67293, -99.08705, 0.7], // Patio
-      [19.67299, -99.08700, 0.6], // Cafetería
-      [19.67300, -99.08710, 0.4], // Biblioteca
-      [19.67292, -99.08708, 0.3], // Cancha
-      [19.67288, -99.08715, 0.5], // Estacionamiento
-      [19.67290, -99.08702, 0.6], // Entrada principal
-      [19.67302, -99.08705, 0.7], // Laboratorio
-      [19.67304, -99.08712, 0.8], // Dirección
-      [19.67286, -99.08710, 0.5]  // Talleres
-    ];
+      // Limpiar ID de Leaflet si existe
+      if (mapContainer._leaflet_id) {
+        mapContainer._leaflet_id = null;
+      }
 
-    L.heatLayer(reportesHeat, {
-      radius: 25,
-      blur: 15,
-      maxZoom: 17,
-      gradient: { 0.3: 'lime', 0.6: 'yellow', 0.9: 'red' }
-    }).addTo(map);
+      // Coordenadas aproximadas para centrar el mapa
+      map = L.map('map').setView([19.6729569, -99.0870913], 17);
 
-    // Función de limpieza que se ejecuta cuando el componente se desmonta
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Datos © OpenStreetMap',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Zonas de calor (datos de ejemplo)
+      var reportesHeat = [
+        [19.67295, -99.08709, 0.9], // Baños
+        [19.67297, -99.08712, 0.8], // Pasillos
+        [19.67293, -99.08705, 0.7], // Patio
+        [19.67299, -99.08700, 0.6], // Cafetería
+        [19.67300, -99.08710, 0.4], // Biblioteca
+        [19.67292, -99.08708, 0.3], // Cancha
+        [19.67288, -99.08715, 0.5], // Estacionamiento
+        [19.67290, -99.08702, 0.6], // Entrada principal
+        [19.67302, -99.08705, 0.7], // Laboratorio
+        [19.67304, -99.08712, 0.8], // Dirección
+        [19.67286, -99.08710, 0.5]  // Talleres
+      ];
+
+      L.heatLayer(reportesHeat, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17,
+        gradient: { 0.3: 'lime', 0.6: 'yellow', 0.9: 'red' }
+      }).addTo(map);
+    };
+
+    // Iniciar el proceso de inicialización
+    animationFrameId = requestAnimationFrame(initHeatmap);
+
+    // Función de limpieza
     return () => {
+      cancelAnimationFrame(animationFrameId);
       if (map) {
         map.remove();
       }
@@ -119,8 +140,8 @@ function Inicio({ alumnos, salones, reportes }) {
 
         {/* MAPA DE CALOR */}
         <div className="map-container">
-          <h3 style={{ textAlign: 'center', color: '#032b2b' }}>Mapa de Calor de Incidencias</h3>
-          <div id="map" style={{ height: '400px' }}></div>
+          <h3>Mapa de Calor de Incidencias</h3>
+          <div id="map"></div>
         </div>
 
         {/* Contenedor principal para alinear gráficos y alertas (código existente) */}

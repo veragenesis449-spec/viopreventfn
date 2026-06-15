@@ -5,7 +5,7 @@ import Alumnos from './Alumnos'; // Importamos el nuevo componente
 import Reportes from './Reportes'; // Importamos el componente de Reportes
 import Salones from './Salones'; // Importamos el componente de Salones
 import Inicio from './Inicio'; // Importamos el nuevo componente de Inicio
-import DataTable from './DataTable'; // Importamos el nuevo componente genérico
+import GestionOrientadores from './Orientadores'; // Importamos el componente de Orientadores/Responsables
 
 function Dashboard({ onLogout }) {
   // Estado para controlar la vista activa
@@ -118,9 +118,17 @@ function Dashboard({ onLogout }) {
       case 'Salones':
         return <Salones />;
       case 'Orientadores':
-        return <DataTable title="Gestión de Orientadores" data={orientadores} />;
+        return <GestionOrientadores
+          tipo="Orientadores"
+          orientadores={orientadores}
+          responsables={responsables}
+        />;
       case 'Responsables':
-        return <DataTable title="Gestión de Responsables" data={responsables} />;
+        return <GestionOrientadores
+          tipo="Responsables"
+          orientadores={orientadores}
+          responsables={responsables}
+        />;
       case 'Inicio':
       default:
         // Pasamos los datos directamente al componente Inicio
