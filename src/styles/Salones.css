@@ -1,32 +1,284 @@
-/* --- Estilos para las Pestañas de Grupos --- */
-.grupos-tabs {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.salones-page {
+  background: linear-gradient(145deg, #eef7f0, #ffffff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px 40px;
+}
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.12);
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  color: #134d21;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.semestres-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 16px;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
 }
 
-.grupo-tab {
-  padding: 8px 16px;
-  border: 1px solid #cbd5e0;
-  background-color: #f8fafc;
-  color: #4a5568;
-  border-radius: 6px;
+.semestre {
+  margin-bottom: 18px;
+}
+
+.semestre-detalle {
+  width: 100%;
+  margin-top: 24px;
+  padding: 24px;
+  background: #f8fdf9;
+  border-radius: 16px;
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.btn-semestre {
+  min-width: 160px;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 16px;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  transition: 0.3s;
 }
 
-.grupo-tab:hover {
-  background-color: #edf2f7;
-  border-color: #a0aec0;
+.btn-semestre:hover {
+  background: #1b5e20;
 }
 
-.grupo-tab.active {
-  background-color: #2c5282; /* Un azul oscuro, similar al de la barra lateral */
-  color: #ffffff;
-  border-color: #2c5282;
+.btn-semestre.active {
+  background: #14532d;
+}
+
+.salones {
+  display: none;
+  margin-top: 10px;
+  padding: 15px;
+  background: #f1fff1;
+  border-radius: 12px;
+}
+
+.salones.show {
+  display: block;
+}
+
+h3 {
+  color: #2e7d32;
+  margin-bottom: 14px;
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.lista-salones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.lista-salones > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.salon {
+  background: linear-gradient(135deg, #38a169, #2f855a);
+  color: white;
+  padding: 14px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(34, 197, 94, 0.15);
+}
+
+.salon:hover {
+  background: linear-gradient(135deg, #2f855a, #276749);
+  transform: translateY(-2px);
+}
+
+.salon.selected {
+  background: #1b5e20;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.detalle-salon {
+  width: 100%;
+  margin-top: 16px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(72, 187, 120, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detalle-salon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.detalle-salon h2 {
+  color: #134d21;
+  margin-bottom: 18px;
+  font-size: 1.75rem;
+}
+
+.btn-regresar,
+.button-primary {
+  background: linear-gradient(135deg, #16a34a, #059669);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(22, 163, 74, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-regresar:hover,
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(22, 163, 74, 0.22);
+}
+
+.btn-regresar {
+  background: linear-gradient(135deg, #14532d, #166534);
+}
+
+.selected-row {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.select-button {
+  background: linear-gradient(90deg,#ecffef,#e6fff1);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight:600;
+}
+
+.selected-student-card {
+  margin-top: 22px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: linear-gradient(90deg,#f0fff7,#ffffff);
+  border: 1px solid rgba(16,185,129,0.14);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  box-shadow: 0 10px 24px rgba(16,185,129,0.06);
+}
+
+.selected-student-card h3 {
+  margin-bottom:6px;
+  color:#065f46;
+  font-size:1rem;
+}
+
+.selected-student-card p {
+  color:#334155;
+  line-height:1.45;
+  font-size:0.95rem;
+}
+
+.alumnos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+}
+
+.alumnos-table th,
+.alumnos-table td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.alumnos-table thead th {
+  background: rgba(250,255,250,0.6);
+  color: #134d21;
   font-weight: 600;
 }
+
+.alumnos-table tbody tr {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-button {
+  background: #fbbf24;
+  color: #1f2937;
+}
+
+.button-primary,
+.action-button {
+  transition: transform 0.2s ease;
+}
+
+.button-primary:hover,
+.action-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Modern overrides */
+.container { border-radius: 22px; }
+.btn-semestre { border-radius: 14px; padding:12px 18px; font-weight:700 }
+.salones { background: transparent; }
+.salon { border-radius: 16px; padding:18px; }
+.page-subtitle { display:block; margin-bottom:12px }

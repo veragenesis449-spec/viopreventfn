@@ -1,0 +1,156 @@
+.content-area {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(10, 35, 77, 0.08);
+  padding: 30px;
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.content-area h1 {
+  font-size: 2.3rem;
+  margin-bottom: 18px;
+  color: #0f3f22;
+}
+
+.content-area > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.content-area button {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-agregar {
+  background: linear-gradient(135deg, #1f7d3c, #38b37d);
+  color: #ffffff;
+}
+
+.btn-agregar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(33, 150, 83, 0.18);
+}
+
+.btn-eliminar {
+  background: #f04f4f;
+  color: #ffffff;
+}
+
+.btn-eliminar:hover {
+  opacity: 0.92;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  background: #ffffff;
+}
+
+thead th {
+  text-align: left;
+  padding: 16px 18px;
+  background: #eef8f1;
+  color: #14532d;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+tbody tr:hover {
+  background: rgba(16, 185, 129, 0.06);
+}
+
+tbody td {
+  padding: 16px 18px;
+  color: #263238;
+}
+
+.btn-editar,
+.btn-eliminar-tabla {
+  border: none;
+  border-radius: 12px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-editar {
+  background: #facc15;
+  color: #1f2937;
+  margin-right: 8px;
+}
+
+.btn-eliminar-tabla {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.btn-editar:hover,
+.btn-eliminar-tabla:hover {
+  opacity: 0.92;
+}
+
+.no-data-row td {
+  text-align: center;
+  padding: 30px 0;
+  color: #64748b;
+}
+
+@media (max-width: 900px) {
+  .content-area {
+    padding: 22px;
+  }
+
+  .content-area > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    margin-bottom: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #f9fdf7;
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #0f3f22;
+    width: 45%;
+  }
+}
