@@ -41,6 +41,12 @@ body {
   color: #666;
 }
 
+/* Forzar texto negro para el título y subtítulo del cuestionario */
+.logo .logo-title,
+.logo .logo-subtitle {
+  color: #000;
+}
+
 .main-nav-landing ul {
   list-style: none;
   padding: 0;
@@ -71,8 +77,12 @@ body {
 
 .hero-section {
   background-color: #789a44;
+  /* Restaurar imagen de huellas */
   background-image: url('../imagenes/huellas.jpeg');
-  background-size: 1400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden; /* evita que la imagen se muestre por fuera del contenedor */
   color: white;
   padding: 5rem 2rem 8rem;
   position: relative;
@@ -84,7 +94,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 100px; /* un poco más alto para cubrir mejor la transición */
   background: white;
   border-radius: 50% / 100%;
   border-bottom-left-radius: 0;
@@ -95,6 +105,8 @@ body {
 .hero-content {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 3; /* contenido por encima del arco blanco */
 }
 
 .tagline-wrapper {
@@ -114,6 +126,11 @@ body {
   font-size: 3.5rem;
   margin: 0.5rem 0;
   font-weight: 700;
+}
+
+/* Forzar título principal del hero en blanco */
+.hero-content h1 {
+  color: #fff !important;
 }
 
 .hero-content p {
@@ -217,5 +234,5 @@ body {
 }
 
 .button-primary:hover {
-  background-color: #5c7a33;
+  background-color: #f6f6f6;
 }

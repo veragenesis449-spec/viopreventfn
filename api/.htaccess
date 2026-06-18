@@ -1,5 +1,6 @@
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "http://localhost:3001"
+    # Removed fixed Access-Control-Allow-Origin so PHP can control allowed origins dynamically.
+    # Header set Access-Control-Allow-Origin "http://localhost:3001"
     Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
     Header set Access-Control-Allow-Headers "Content-Type, Authorization"
 </IfModule>

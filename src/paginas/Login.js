@@ -25,7 +25,7 @@ function Login({ onLogin }) {
     <div className="login-page-container">
       <div className="login-card">
         <h1 className="login-brand-title">VioPrevent</h1>
-        <h2 className="login-title">Iniciar Sesión</h2>
+        <h1 className="login-title">Iniciar Sesión</h1>
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <input 
@@ -47,22 +47,14 @@ function Login({ onLogin }) {
           </div>
           <div className="form-group">
             <select value={role} onChange={(e) => setRole(e.target.value)} required>
-              <option value="director">Director</option>
-              <option value="orientador">Orientador</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <select value={role} onChange={(e) => setRole(e.target.value)} required>
-              <option value="director">Director</option>
-              <option value="orientador">Orientador</option>
+              <option value="director">Directivos</option>
+              <option value="orientador">Orientadores</option>
             </select>
           </div>
           <button type="submit" className="button-primary login-submit-btn">Ingresar</button>
         </form>
         <div className="login-footer-links">
-          <a href="#">¿Olvidaste tu contraseña?</a>
-          <span className="separator">|</span>
-          <span>¿No tienes cuenta? <a href="#">Regístrate</a></span>
+          {/* Enlace de recuperar contraseña eliminado por solicitud */}
         </div>
 
         {/* 2. Añadir el nuevo enlace para volver */}

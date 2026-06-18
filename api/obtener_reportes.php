@@ -18,8 +18,13 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Consulta para obtener todos los reportes, incluyendo el nivel de gravedad
-$sql = "SELECT id_reporte, descripcion, fecha_reporte, nivel_gravedad FROM reportes ORDER BY fecha_reporte DESC";
+// Consulta para obtener todos los reportes, incluyendo el nivel de gravedad y área si existe
+$areaCol = '';
+$resCols = $conn->query("SHOW COLUMNS FROM reportes LIKE 'area'");
+if ($resCols && $resCols->num_rows > 0) {
+    $areaCol = ', area';
+}
+$sql = "SELECT id_reporte, descripcion, fecha_reporte, nivel_gravedad" . $areaCol . " FROM reportes ORDER BY fecha_reporte DESC";
 $result = $conn->query($sql);
 
 $reportes = [];

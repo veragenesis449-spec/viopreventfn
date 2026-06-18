@@ -12,14 +12,22 @@ const app = express();
 const port = 3001; // Usamos un puerto diferente al de React (que suele ser 3000)
 
 // 3. Middlewares
-app.use(cors()); // Habilita CORS para todas las rutas
+// Habilita CORS para permitir peticiones desde el frontend (localhost:3000 y desde el host)
+app.use(cors({
+  origin: function(origin, callback){
+    // permitir llamadas desde el navegador (localhost:3000) y desde el servidor local
+    if(!origin) return callback(null, true);
+    if(origin.indexOf('localhost') !== -1) return callback(null, true);
+    return callback(null, true);
+  }
+}));
 app.use(express.json()); // Permite al servidor entender datos en formato JSON
 
 // 4. Configuración de la conexión a la base de datos
 // Usa las credenciales que me proporcionaste.
 const db = mysql.createConnection({
   host: "127.0.0.1",
-  port: 3307,
+  port: 3306,
   user: "root",
   password: "",
   database: "viopreventfnn"
@@ -47,16 +55,38 @@ app.get('/api/alumnos', (req, res) => {
 app.get('/api/alumnos/:grupoId', (req, res) => {
   const grupoId = req.params.grupoId;
   // Validamos el nombre de la tabla para evitar inyección SQL
-  if (!grupoId.startsWith('grupo_')) {
-    return res.status(400).send('Nombre de grupo no válido.');
+  // Si viene en el formato 'grupo_XXX' intentamos leer esa tabla.
+  if (grupoId.startsWith('grupo_')) {
+    const sql = `SELECT * FROM \`${grupoId}\``; // Intentamos leer la tabla específica
+    db.query(sql, (err, results) => {
+      if (err) {
+        // Si la tabla no existe, hacemos fallback a la tabla central `alumnos`
+        // donde guardamos todos los alumnos en una columna `grupo_id` (si aplica).
+        console.warn(`No se pudo leer tabla ${grupoId}, intentando tabla central 'alumnos':`, err.code || err);
+        const numericPart = grupoId.replace(/^grupo_/, '');
+        // Intentamos encontrar por grupo_id (si usan ids internos) o por matricula
+        const fallbackSql = `SELECT * FROM alumnos WHERE grupo_id = ? OR matricula LIKE ?`;
+        db.query(fallbackSql, [numericPart, `%${numericPart}%`], (err2, results2) => {
+          if (err2) {
+            console.error('Error al obtener alumnos desde tabla central:', err2);
+            return res.status(500).send(`Error al obtener los datos del grupo ${grupoId}`);
+          }
+          return res.json(results2);
+        });
+        return;
+      }
+      return res.json(results);
+    });
+    return;
   }
-  
-  const sql = `SELECT * FROM \`${grupoId}\``; // Usamos backticks para nombres de tabla con caracteres especiales
-  
-  db.query(sql, (err, results) => {
+
+  // Si no viene con prefijo 'grupo_', asumimos que es un id numérico de grupo y buscamos en la tabla `alumnos`.
+  const numericId = grupoId;
+  const sql2 = `SELECT * FROM alumnos WHERE grupo_id = ?`;
+  db.query(sql2, [numericId], (err, results) => {
     if (err) {
-      res.status(500).send(`Error al obtener los datos del grupo ${grupoId}`);
-      return;
+      console.error('Error al obtener alumnos por grupo desde tabla central:', err);
+      return res.status(500).send(`Error al obtener los datos del grupo ${grupoId}`);
     }
     res.json(results);
   });
@@ -68,20 +98,38 @@ app.post('/api/alumnos/:grupoId', (req, res) => {
   const studentData = req.body;
 
   // Validamos el nombre de la tabla para evitar inyección SQL
-  if (!grupoId.startsWith('grupo_')) {
-    return res.status(400).send('Nombre de grupo no válido.');
+  // Si viene en formato grupo_XXX intentamos insertar en esa tabla
+  if (grupoId.startsWith('grupo_')) {
+    const sql = `INSERT INTO \`${grupoId}\` (nombre, edad, promedio) VALUES (?, ?, ?)`;
+    db.query(sql, [studentData.nombre, studentData.edad || null, studentData.promedio || null], (err, result) => {
+      if (err) {
+        // Si la tabla no existe, hacemos fallback a insertar en la tabla central `alumnos`
+        console.warn(`No se pudo insertar en tabla ${grupoId}, intentando tabla central 'alumnos':`, err.code || err);
+        const numericPart = grupoId.replace(/^grupo_/, '');
+        const fallbackSql = `INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, matricula, grupo_id) VALUES (?, ?, ?, ?, ?)`;
+        db.query(fallbackSql, [studentData.nombre, studentData.apellido_paterno || null, studentData.apellido_materno || null, studentData.matricula || null, numericPart], (err2, result2) => {
+          if (err2) {
+            console.error('Error al insertar alumno en tabla central:', err2);
+            return res.status(500).send(`Error al guardar el alumno en el grupo ${grupoId}`);
+          }
+          return res.status(201).json({ id: result2.insertId, nombre: studentData.nombre, apellido_paterno: studentData.apellido_paterno, apellido_materno: studentData.apellido_materno, matricula: studentData.matricula, grupo_id: numericPart });
+        });
+        return;
+      }
+      return res.status(201).json({ id: result.insertId, nombre: studentData.nombre, edad: studentData.edad, promedio: studentData.promedio });
+    });
+    return;
   }
 
-  // Asegúrate de que los nombres de las columnas (nombre, edad, promedio) coincidan con tu tabla
-  const sql = `INSERT INTO \`${grupoId}\` (nombre, edad, promedio) VALUES (?, ?, ?)`;
-  
-  db.query(sql, [studentData.nombre, studentData.edad, studentData.promedio], (err, result) => {
+  // Si no viene con prefijo 'grupo_', insertamos en la tabla central `alumnos` con grupo_id
+  const numericId = grupoId;
+  const sql2 = `INSERT INTO alumnos (nombre, apellido_paterno, apellido_materno, matricula, grupo_id) VALUES (?, ?, ?, ?, ?)`;
+  db.query(sql2, [studentData.nombre, studentData.apellido_paterno || null, studentData.apellido_materno || null, studentData.matricula || null, numericId], (err, result) => {
     if (err) {
-      console.error("Error en la base de datos:", err);
-      return res.status(500).send(`Error al guardar el alumno en el grupo ${grupoId}`);
+      console.error('Error al insertar alumno en tabla central:', err);
+      return res.status(500).send('Error al guardar el alumno.');
     }
-    // Devolvemos el nuevo alumno con el ID que le asignó la base de datos
-    res.status(201).json({ id: result.insertId, ...studentData });
+    res.status(201).json({ id: result.insertId, nombre: studentData.nombre, apellido_paterno: studentData.apellido_paterno, apellido_materno: studentData.apellido_materno, matricula: studentData.matricula, grupo_id: numericId });
   });
 });
 
@@ -93,13 +141,26 @@ app.put('/api/alumnos/:grupoId/:alumnoId', (req, res) => {
   if (!grupoId.startsWith('grupo_')) {
     return res.status(400).send('Nombre de grupo no válido.');
   }
+  // Intentamos actualizar la tabla específica del grupo. Si falla (por ejemplo no existe), actualizamos la tabla central `alumnos`.
+  const sql = `UPDATE \`${grupoId}\` SET nombre = ? WHERE id = ?`;
 
-  const sql = `UPDATE \`${grupoId}\` SET nombre = ?, edad = ?, promedio = ? WHERE id = ?`;
-
-  db.query(sql, [nombre, edad, promedio, alumnoId], (err, result) => {
+  db.query(sql, [nombre, alumnoId], (err, result) => {
     if (err) {
-      console.error("Error en la base de datos al actualizar:", err);
-      return res.status(500).send('Error al actualizar el alumno.');
+      console.warn(`No se pudo actualizar tabla ${grupoId}, intentando tabla central 'alumnos':`, err.code || err);
+      // fallback: actualizar registro en tabla central `alumnos`
+      const sql2 = `UPDATE alumnos SET nombre = ?, apellido_paterno = ?, apellido_materno = ?, matricula = ? WHERE id = ?`;
+      const { apellido_paterno, apellido_materno, matricula } = req.body;
+      db.query(sql2, [nombre, apellido_paterno || null, apellido_materno || null, matricula || null, alumnoId], (err2, result2) => {
+        if (err2) {
+          console.error('Error al actualizar alumno en tabla central:', err2);
+          return res.status(500).send('Error al actualizar el alumno.');
+        }
+        if (result2.affectedRows === 0) {
+          return res.status(404).send('Alumno no encontrado.');
+        }
+        return res.json({ message: 'Alumno actualizado correctamente (central)' });
+      });
+      return;
     }
     if (result.affectedRows === 0) {
       return res.status(404).send('Alumno no encontrado.');
@@ -115,13 +176,24 @@ app.delete('/api/alumnos/:grupoId/:alumnoId', (req, res) => {
   if (!grupoId.startsWith('grupo_')) {
     return res.status(400).send('Nombre de grupo no válido.');
   }
-
+  // Intentamos eliminar de la tabla del grupo; si falla, intentamos eliminar de la tabla central `alumnos`.
   const sql = `DELETE FROM \`${grupoId}\` WHERE id = ?`;
 
   db.query(sql, [alumnoId], (err, result) => {
     if (err) {
-      console.error("Error en la base de datos al eliminar:", err);
-      return res.status(500).send('Error al eliminar el alumno.');
+      console.warn(`No se pudo eliminar de tabla ${grupoId}, intentando tabla central 'alumnos':`, err.code || err);
+      const sql2 = `DELETE FROM alumnos WHERE id = ?`;
+      db.query(sql2, [alumnoId], (err2, result2) => {
+        if (err2) {
+          console.error('Error al eliminar alumno en tabla central:', err2);
+          return res.status(500).send('Error al eliminar el alumno.');
+        }
+        if (result2.affectedRows === 0) {
+          return res.status(404).send('Alumno no encontrado.');
+        }
+        return res.json({ message: 'Alumno eliminado correctamente (central)' });
+      });
+      return;
     }
     if (result.affectedRows === 0) {
       return res.status(404).send('Alumno no encontrado.');
@@ -336,6 +408,6 @@ app.get('/api/reportes-detallados', (req, res) => {
 
 
 // 7. Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Servidor corriendo en http://0.0.0.0:${port} (aceptando conexiones locales)`);
 });

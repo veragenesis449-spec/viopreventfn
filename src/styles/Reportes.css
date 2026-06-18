@@ -284,6 +284,147 @@
   color: #111827;
 }
 
+/* Diseño específico para el formulario de orientador y la lista */
+.orientador-form {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid #e6eef8;
+  padding: 18px;
+  border-radius: 12px;
+  max-width: 980px;
+  box-shadow: 0 8px 24px rgba(13, 27, 58, 0.06);
+  margin-bottom: 18px;
+}
+
+.orientador-form h4 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.orientador-form label {
+  display: block;
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.orientador-form input,
+.orientador-form select,
+.orientador-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d2dbe9;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.orientador-form .form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.btn-primary {
+  background: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.12);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.save-message {
+  color: #065f46;
+  font-weight: 600;
+}
+
+.victimas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.victima-card {
+  background: #ffffff;
+  border: 1px solid #eef2f7;
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(12, 20, 40, 0.04);
+}
+
+.victima-card strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.victima-card .descripcion {
+  margin-top: 8px;
+  color: #475569;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.report-card {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid #e6eef8;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(13, 27, 58, 0.05);
+}
+
+.report-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.report-victim {
+  margin: 0;
+  font-size: 16px;
+}
+
+.report-desc {
+  color: #334155;
+  margin-top: 8px;
+}
+
+/* Responsivo: en pantallas amplias mostrar formulario en dos columnas */
+@media (min-width: 920px) {
+  .orientador-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 18px;
+    align-items: start;
+  }
+
+  .orientador-form textarea {
+    grid-column: 1 / -1;
+  }
+
+  .orientador-form .form-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
 .form-group {
   display: grid;
   gap: 8px;

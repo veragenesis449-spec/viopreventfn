@@ -6,6 +6,7 @@ function Formulario() {
     iniciales: '',
     grupo: '',
     edad: '',
+  area: '',
     genero: '',
     gravedad: '', // Nuevo campo para la gravedad
     descripcion: '',
@@ -65,7 +66,8 @@ function Formulario() {
     };
 
     try {
-      const response = await fetch('http://localhost/VioPrevent/api/guardar_reporte.php', {
+  console.log('Enviando reporte (finalData):', finalData);
+  const response = await fetch('http://localhost/VioPrevent/api/guardar_reporte.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,6 +76,7 @@ function Formulario() {
       });
 
       const result = await response.json();
+  console.log('Respuesta guardar_reporte:', result, 'status:', response.status);
 
       if (response.ok) {
         alert('Gracias por enviar tu reporte. Ha sido registrado.');
@@ -163,6 +166,18 @@ function Formulario() {
             onChange={handleChange}
             placeholder="Tu edad"
           />
+        </div>
+        <div className="form-group">
+          <label>Área donde ocurrió el suceso</label>
+          <select name="area" value={formData.area} onChange={handleChange} required>
+            <option value="">Selecciona un área</option>
+            <option value="cafeteria">Cafetería</option>
+            <option value="direccion">Dirección</option>
+            <option value="edificio_1">Edificio 1</option>
+            <option value="edificio_2">Edificio 2</option>
+            <option value="canchas_estacionamiento">Canchas</option>
+            <option value="taller_electricidad">Taller de Electricidad</option>
+          </select>
         </div>
         <div className="form-group">
           <label>Género</label>

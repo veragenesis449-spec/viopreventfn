@@ -1,0 +1,68 @@
+.respuestas-page {
+  padding: 20px;
+  background: #f7fafc;
+  color: #1f2937;
+  min-height: 100%;
+}
+
+.respuestas-page h2 {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  color: #111827;
+}
+
+.reporte-block {
+  background: #ffffff;
+  border: 1px solid #e6e9ee;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+}
+
+.reporte-block h3 {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.reporte-block > div {
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 10px;
+}
+
+.respuestas-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.respuestas-table thead th {
+  text-align: left;
+  font-weight: 600;
+  padding: 8px 10px;
+  background: linear-gradient(90deg,#f1f5f9,#fff);
+  border-bottom: 1px solid #e6e9ee;
+  color: #0f172a;
+}
+
+.respuestas-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #374151;
+}
+
+/* Estilo para celdas largas */
+.respuestas-table td {
+  word-break: break-word;
+}
+
+@media (max-width: 720px) {
+  .reporte-block { padding: 12px; }
+  .respuestas-table thead { display: none; }
+  .respuestas-table, .respuestas-table tbody, .respuestas-table tr, .respuestas-table td { display: block; width: 100%; }
+  .respuestas-table tr { margin-bottom: 12px; }
+  .respuestas-table td { padding: 8px; border: none; background: #fff; }
+  .respuestas-table td::before { content: attr(data-label) ": "; font-weight: 600; color: #0f172a; }
+}

@@ -7,6 +7,9 @@ import LandingPage from './paginas/pagcuestionario'; // Ruta corregida
 import Formulario from './paginas/Formulario'; // Importar el nuevo componente
 import VisorPDF from './paginas/VisorPDF';
 import VisorPDF2 from './paginas/VisorPDF2';
+import ManualTecnico from './paginas/ManualTecnico';
+import AQuienVaDirigido from './paginas/AQuienVaDirigido';
+import SobreCuestionario from './paginas/SobreCuestionario';
 
 function App() {
   return (
@@ -45,6 +48,9 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/formulario" element={<Formulario />} /> {/* Añadir la nueva ruta */}
+  <Route path="/manual-tecnico" element={<ManualTecnico />} />
+  <Route path="/a-quien-va-dirigido" element={<AQuienVaDirigido />} />
+  <Route path="/sobre-el-cuestionario" element={<SobreCuestionario />} />
         <Route path="/documento" element={<VisorPDF />} />
         <Route path="/documento2" element={<VisorPDF2 />} />
         <Route 

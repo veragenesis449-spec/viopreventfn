@@ -60,20 +60,40 @@ function Inicio({ alumnos, salones, reportes }) {
         maxZoom: 19
       }).addTo(map);
 
-      // Zonas de calor (datos de ejemplo)
-      var reportesHeat = [
-        [19.67295, -99.08709, 0.9], // Baños
-        [19.67297, -99.08712, 0.8], // Pasillos
-        [19.67293, -99.08705, 0.7], // Patio
-        [19.67299, -99.08700, 0.6], // Cafetería
-        [19.67300, -99.08710, 0.4], // Biblioteca
-        [19.67292, -99.08708, 0.3], // Cancha
-        [19.67288, -99.08715, 0.5], // Estacionamiento
-        [19.67290, -99.08702, 0.6], // Entrada principal
-        [19.67302, -99.08705, 0.7], // Laboratorio
-        [19.67304, -99.08712, 0.8], // Dirección
-        [19.67286, -99.08710, 0.5]  // Talleres
-      ];
+      // Mapear áreas a coordenadas fijas (ajusta según el plano real)
+      const areaCoords = {
+        cafeteria: [19.67299, -99.08700],
+        direccion: [19.67304, -99.08712],
+        edificio_1: [19.67295, -99.08709],
+        edificio_2: [19.67297, -99.08712],
+        canchas_estacionamiento: [19.67292, -99.08708],
+        taller_electricidad: [19.67286, -99.08710]
+      };
+
+      // Calcular intensidad por área contando reportes
+      const areaCounts = {};
+      (Array.isArray(reportes) ? reportes : []).forEach(r => {
+        const a = (r.area || r.area || '').toString().trim().toLowerCase();
+        if (!a) return;
+        // Normalizar algunos nombres comunes
+        const key = a.replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+        areaCounts[key] = (areaCounts[key] || 0) + 1;
+      });
+
+      const reportesHeat = [];
+      Object.keys(areaCounts).forEach(key => {
+        if (areaCoords[key]) {
+          // intensidad entre 0.2 y 1.0 según conteo (puedes ajustar)
+          const intensity = Math.min(1, 0.2 + areaCounts[key] * 0.2);
+          reportesHeat.push([areaCoords[key][0], areaCoords[key][1], intensity]);
+        }
+      });
+
+      // Si no hay datos reales, usar puntos de ejemplo
+      if (reportesHeat.length === 0) {
+        reportesHeat.push([19.67295, -99.08709, 0.3]);
+        reportesHeat.push([19.67299, -99.08700, 0.4]);
+      }
 
       L.heatLayer(reportesHeat, {
         radius: 25,
@@ -93,7 +113,7 @@ function Inicio({ alumnos, salones, reportes }) {
         map.remove();
       }
     };
-  }, []); // El array vacío asegura que este efecto se ejecute solo una vez.
+  }, [reportes]); // Recalcular el mapa cuando cambien los reportes.
 
   return (
     <>
@@ -101,6 +121,8 @@ function Inicio({ alumnos, salones, reportes }) {
       <section className="content-area">
         <h1>Bienvenido al Panel de Control</h1>
         <p>Desde aquí podrás administrar la información clave de la institución.</p>
+
+
 
         {/* Contenedor para las tarjetas de estadísticas (código existente) */}
         <div className="stats-cards-container">

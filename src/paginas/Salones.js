@@ -5,19 +5,19 @@ import AddStudentModal from '../componentes/AddStudentModal';
 const semestres = [
   {
     id: 's100',
-    title: 'Semestre 100',
+    title: '1er Semestre',
     matutino: ['101', '102', '103', '104', '105', '106'],
     vespertino: ['107', '108', '109', '110', '111', '112'],
   },
   {
     id: 's400',
-    title: 'Semestre 400',
+    title: '2do Semestre',
     matutino: ['401', '402', '403', '404', '405', '406'],
     vespertino: ['407', '408', '409', '410', '411', '412'],
   },
   {
     id: 's600',
-    title: 'Semestre 600',
+    title: '3er Semestre',
     matutino: ['601', '602', '603', '604', '605', '606'],
     vespertino: ['607', '608', '609', '610', '611', '612'],
   },

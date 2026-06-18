@@ -16,11 +16,10 @@ function Cuestionario() {
         </div>
         <nav className="main-nav-landing">
           <ul>
-            <li><a href="#" className="active">Inicio</a></li>
-            <li><a href="#">Sobre el cuestionario</a></li>
-            <li><a href="#">¿Cómo funciona?</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Contacto</a></li>
+            <li><Link to="/" className="active">Inicio</Link></li>
+            <li><Link to="/sobre-el-cuestionario">Sobre el cuestionario</Link></li>
+            <li><Link to="/a-quien-va-dirigido">¿A quien va dirigido?</Link></li>
+            <li><Link to="/manual-tecnico">Manual Tecnico</Link></li>
           </ul>
         </nav>
         <Link to="/login" className="btn btn-start">Comenzar</Link>
@@ -35,7 +34,6 @@ function Cuestionario() {
           <p>Responde con sinceridad y ayúdanos a conocerte mejor.<br/>No hay respuestas correctas o incorrectas.</p>
           <div className="hero-buttons">
             <Link to="/formulario" className="btn btn-secondary-landing">Comenzar cuestionario <span className="paw-icon-small">🐾</span></Link>
-            <a href="#" className="more-info">Más información &gt;</a>
           </div>
         </div>
       </main>

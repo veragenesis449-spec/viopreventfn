@@ -6,8 +6,9 @@ import Reportes from './Reportes'; // Importamos el componente de Reportes
 import Salones from './Salones'; // Importamos el componente de Salones
 import Inicio from './Inicio'; // Importamos el nuevo componente de Inicio
 import GestionOrientadores from './Orientadores'; // Importamos el componente de Orientadores/Responsables
+import Respuestas from './Respuestas'; // Nueva sección para mostrar respuestas del cuestionario
 
-function Dashboard({ onLogout }) {
+function Dashboard({ onLogout, userRole = 'director', userName = 'Usuario' }) {
   // Estado para controlar la vista activa
   const [activeView, setActiveView] = useState('Inicio');
   // El estado ahora se inicializa como un array vacío.
@@ -108,12 +109,13 @@ function Dashboard({ onLogout }) {
           salones={salones}
         />;
       case 'Reportes':
-        // Ahora pasamos la lista de reportes y las funciones
+        // Ahora pasamos la lista de reportes, las funciones y el rol del usuario
         return <Reportes 
           alumnos={alumnos}
           reportes={reportes}
           onAddReport={handleAddReport}
           onDeleteReport={handleDeleteReport}
+          userRole={userRole}
         />;
       case 'Salones':
         return <Salones />;
@@ -137,8 +139,23 @@ function Dashboard({ onLogout }) {
           salones={salones}
           reportes={reportes}
         />;
+      case 'Respuestas':
+        return <Respuestas />;
     }
   };
+
+  // Definir vistas permitidas según rol
+  const allowedViews = userRole === 'orientador'
+    ? ['Inicio', 'Reportes', 'Respuestas']
+    : ['Inicio', 'Alumnos', 'Reportes', 'Salones', 'Orientadores', 'Responsables', 'Ajustes'];
+
+  // Si la vista activa no está permitida para el rol actual, resetear a Inicio
+  useEffect(() => {
+    if (!allowedViews.includes(activeView)) {
+      setActiveView('Inicio');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userRole]);
 
   return (
     <div className="dashboard-container">
@@ -149,26 +166,45 @@ function Dashboard({ onLogout }) {
         </div>
         <nav className="sidebar-nav">
           <ul>
+            {/* Renderizado condicional según rol */}
             <li className={activeView === 'Inicio' ? 'active' : ''}>
               <a href="#" onClick={() => setActiveView('Inicio')}>Inicio</a>
             </li>
-            <li className={activeView === 'Alumnos' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Alumnos')}>Alumnos</a>
-            </li>
-            <li className={activeView === 'Reportes' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Reportes')}>Reportes</a>
-            </li>
-            <li className={activeView === 'Salones' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Salones')}>Salones</a>
-            </li>
-            <li className={activeView === 'Orientadores' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Orientadores')}>Orientadores</a>
-            </li>
-            <li className={activeView === 'Responsables' ? 'active' : ''}>
-              <a href="#" onClick={() => setActiveView('Responsables')}>Responsables</a>
-            </li>
-            {/* Añade aquí más elementos de menú en el futuro */}
-            <li><a href="#" onClick={() => setActiveView('Ajustes')}>Ajustes</a></li>
+            {allowedViews.includes('Alumnos') && (
+              <li className={activeView === 'Alumnos' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Alumnos')}>Alumnos</a>
+              </li>
+            )}
+            {allowedViews.includes('Reportes') && (
+              <li className={activeView === 'Reportes' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Reportes')}>Reportes</a>
+              </li>
+            )}
+            {allowedViews.includes('Respuestas') && (
+              <li className={activeView === 'Respuestas' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Respuestas')}>Respuestas</a>
+              </li>
+            )}
+            {allowedViews.includes('Salones') && (
+              <li className={activeView === 'Salones' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Salones')}>Salones</a>
+              </li>
+            )}
+            {allowedViews.includes('Orientadores') && (
+              <li className={activeView === 'Orientadores' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Orientadores')}>Orientadores</a>
+              </li>
+            )}
+            {allowedViews.includes('Responsables') && (
+              <li className={activeView === 'Responsables' ? 'active' : ''}>
+                <a href="#" onClick={() => setActiveView('Responsables')}>Responsables</a>
+              </li>
+            )}
+            {allowedViews.includes('Ajustes') && (
+              <li>
+                <a href="#" onClick={() => setActiveView('Ajustes')}>Ajustes</a>
+              </li>
+            )}
           </ul>
         </nav>
       </aside>
@@ -180,7 +216,7 @@ function Dashboard({ onLogout }) {
             <input type="search" placeholder="Buscar alumnos, reportes..." />
           </div>
           <div className="header-user">
-            <span>Juan Pérez (Director)</span>
+            <span>{userName} ({userRole === 'director' ? 'Director' : userRole === 'orientador' ? 'Orientador' : userRole})</span>
             <button className="logout-button" onClick={onLogout}>Cerrar Sesión</button>
           </div>
         </header>
